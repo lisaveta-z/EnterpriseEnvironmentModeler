@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'app',
+    'crawler',
     # Add your apps here to enable them
     'django.contrib.admin',
     'django.contrib.auth',
@@ -55,10 +55,12 @@ MIDDLEWARE_CLASSES = [
 
 ROOT_URLCONF = 'modeler.urls'
 
+TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
+ 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIR,],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,4 +125,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
+#STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]

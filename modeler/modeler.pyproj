@@ -37,6 +37,13 @@
     <Compile Include="app\views.py" />
     <Compile Include="app\__init__.py" />
     <Compile Include="app\migrations\__init__.py" />
+    <Compile Include="crawler\admin.py" />
+    <Compile Include="crawler\apps.py" />
+    <Compile Include="crawler\migrations\__init__.py" />
+    <Compile Include="crawler\models.py" />
+    <Compile Include="crawler\tests.py" />
+    <Compile Include="crawler\views.py" />
+    <Compile Include="crawler\__init__.py" />
     <Compile Include="manage.py" />
     <Compile Include="modeler\__init__.py" />
     <Compile Include="modeler\settings.py" />
@@ -53,9 +60,20 @@
     <Folder Include="app\static\app\scripts\" />
     <Folder Include="app\templates\" />
     <Folder Include="app\templates\app\" />
+    <Folder Include="crawler\" />
+    <Folder Include="crawler\migrations\" />
+    <Folder Include="crawler\templates\" />
+    <Folder Include="crawler\templates\crawler\" />
     <Folder Include="modeler\" />
+    <Folder Include="static\" />
+    <Folder Include="static\content\" />
+    <Folder Include="static\fonts\" />
+    <Folder Include="static\scripts\" />
+    <Folder Include="templates\" />
+    <Folder Include="templates\crawler\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="crawler\templates\crawler\index.html" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="app\static\app\content\bootstrap.css" />
@@ -86,6 +104,30 @@
     <Content Include="app\templates\app\layout.html" />
     <Content Include="app\templates\app\login.html" />
     <Content Include="app\templates\app\loginpartial.html" />
+    <Content Include="static\content\bootstrap.css" />
+    <Content Include="static\content\bootstrap.min.css" />
+    <Content Include="static\content\site.css" />
+    <Content Include="static\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="static\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="static\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="static\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="templates\layout.html" />
+    <None Include="static\scripts\_references.js" />
+    <Content Include="static\scripts\bootstrap.js" />
+    <Content Include="static\scripts\bootstrap.min.js" />
+    <None Include="static\scripts\jquery.validate-vsdoc.js" />
+    <None Include="static\scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="static\scripts\jquery-1.10.2.js" />
+    <Content Include="static\scripts\jquery-1.10.2.min.js" />
+    <Content Include="static\scripts\jquery-1.10.2.min.map" />
+    <Content Include="static\scripts\jquery.validate.js" />
+    <Content Include="static\scripts\jquery.validate.min.js" />
+    <Content Include="static\scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="static\scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="static\scripts\modernizr-2.6.2.js" />
+    <Content Include="static\scripts\respond.js" />
+    <Content Include="static\scripts\respond.min.js" />
+    <Content Include="templates\crawler\index.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.html">
