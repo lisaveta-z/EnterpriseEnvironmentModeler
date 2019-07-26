@@ -39,9 +39,15 @@
     <Compile Include="app\migrations\__init__.py" />
     <Compile Include="crawler\admin.py" />
     <Compile Include="crawler\apps.py" />
+    <Compile Include="crawler\crawlers.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="crawler\migrations\0001_initial.py" />
     <Compile Include="crawler\migrations\__init__.py" />
     <Compile Include="crawler\models.py" />
+    <Compile Include="crawler\proxy_getter.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="crawler\tests.py" />
     <Compile Include="crawler\views.py" />
     <Compile Include="crawler\__init__.py" />
@@ -63,8 +69,6 @@
     <Folder Include="app\templates\app\" />
     <Folder Include="crawler\" />
     <Folder Include="crawler\migrations\" />
-    <Folder Include="crawler\templates\" />
-    <Folder Include="crawler\templates\crawler\" />
     <Folder Include="modeler\" />
     <Folder Include="static\" />
     <Folder Include="static\content\" />
@@ -74,7 +78,7 @@
     <Folder Include="templates\crawler\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="crawler\templates\crawler\index.html" />
+    <Content Include="crawler\useragents.txt" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="app\static\app\content\bootstrap.css" />
