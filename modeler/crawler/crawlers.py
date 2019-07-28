@@ -1,10 +1,11 @@
-from proxy_getter import get_viable_proxy_list
-from proxy_getter import get_html_proxy
+from .proxy_getter import get_viable_proxy_list
+from .proxy_getter import get_html_proxy
 from bs4 import BeautifulSoup
 import requests
 import random
 import time
 import os
+from .models import Data
 
 def Crawl(webUrl):
     url = webUrl
@@ -98,9 +99,17 @@ def Crawl(webUrl):
     #except Exception as e:
     #    print('Исключение при записи в БД', e)
 
+    # Обращение к database
+    try:
+        if not(hasError):
+            data = Data(url = url, content = content, date = date, tags = tags)
+            data.save()
+    except Exception as e:
+        print('Исключение при записи в БД', e)
+
 
 def CollectUrls(baseUrl, searchUrl):
-    f = open("crawlerResult.txt", "w")
+    f = open("crawlerResult.txt", "w+")
     f.close()
     flag = True
     count = 0
@@ -116,7 +125,9 @@ def CollectUrls(baseUrl, searchUrl):
 
             for heading in s.findAll('div', {'class':'heading'}):
                 flag = True
-                Crawl("%s%s" % (baseUrl, heading.h4.a.get('href')))
+                search_url = "%s%s" % (baseUrl, heading.h4.a.get('href'))
+                if not(contains_url(search_url)):
+                    Crawl(search_url)
                 #Crawl("%s%s" % ('http://www.sdelanounas.ru', '/blogs/5307'))
         except Exception as e:
             print('Исключение в CollectUrls', e)
@@ -136,4 +147,11 @@ cur_dir = os.path.dirname(__file__)
 useragent_filename = os.path.join(cur_dir, 'useragents.txt')
 list_of_user_agents = open(useragent_filename).read().split('\n')
 
-CollectUrls('http://www.sdelanounas.ru', 'http://www.sdelanounas.ru/sphinxsearch/?s=росэнергоатом&page=')
+#CollectUrls('http://www.sdelanounas.ru', 'http://www.sdelanounas.ru/sphinxsearch/?s=росэнергоатом&page=')
+
+def sdelanounas(url):
+    print("sdelanounas()")
+    CollectUrls(url, 'http://www.sdelanounas.ru/sphinxsearch/?s=росэнергоатом&page=')
+
+def contains_url(search_url):
+    return Data.objects.filter(url=search_url).exists()
