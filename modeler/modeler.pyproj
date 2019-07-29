@@ -39,7 +39,10 @@
     <Compile Include="app\migrations\__init__.py" />
     <Compile Include="crawler\admin.py" />
     <Compile Include="crawler\apps.py" />
-    <Compile Include="crawler\crawlers.py">
+    <Compile Include="crawler\crawlers\sdelanounas.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="crawler\crawlers_executor.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="crawler\migrations\0001_initial.py" />
@@ -69,6 +72,7 @@
     <Folder Include="app\templates\app\" />
     <Folder Include="crawler\" />
     <Folder Include="crawler\migrations\" />
+    <Folder Include="crawler\crawlers\" />
     <Folder Include="modeler\" />
     <Folder Include="static\" />
     <Folder Include="static\content\" />

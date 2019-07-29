@@ -1,12 +1,14 @@
-
 from bs4 import BeautifulSoup
 import requests
+import random
+import time
+import os
 
 def get_html_proxy(url):
 	r = requests.get(url)
 	return r.text
 
-def  get_viable_proxy_list(html, wanted_num):
+def get_viable_proxy_list(html, wanted_num):
 	soup = BeautifulSoup(html,'lxml')
 	proxies = soup.find('tbody').find_all('tr')
 	list_of_viable_proxies = []
@@ -40,8 +42,8 @@ def  get_viable_proxy_list(html, wanted_num):
 				print(data)
 				print(r.status_code)
 		except requests.exceptions.ConnectionError:
-		 	print('Oops. Seems connection error!')
-		 	continue
+			print('Oops. Seems connection error!')
+			continue
 		except requests.exceptions.ConnectTimeout:
 			print('Oops. Connection timeout occured!')
 			continue 	
@@ -54,12 +56,24 @@ def  get_viable_proxy_list(html, wanted_num):
 		raise SystemExit(1)
 	else:
 		return list_of_viable_proxies
+
+
+list_of_viable_proxies = get_viable_proxy_list(get_html_proxy('https://www.ip-adress.com/proxy-list'),10)
+cur_dir = os.path.dirname(__file__)
+useragent_filename = os.path.join(cur_dir, 'useragents.txt')
+list_of_user_agents = open(useragent_filename).read().split('\n')
 	
+
+def get_html_with_proxy(url):
+	time.sleep(round(abs(random.gauss(1.5, 1) + random.random()/10 + random.random()/100), 4))
+	useragent = {'User-Agent': random.choice(list_of_user_agents)}
+	proxy = {'http': random.choice(list_of_viable_proxies)}
+	r = requests.get(url, timeout = None, headers = useragent, proxies = {'': proxy})
+	return r.text
 
 def main():
 	url = 'https://www.ip-adress.com/proxy-list'	
 	print("Full list of viable proxies = ",  get_viable_proxy_list(get_html_proxy(url), 20))
-
 
 if __name__ == '__main__':
 	main()
