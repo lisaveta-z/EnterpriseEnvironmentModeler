@@ -19,7 +19,7 @@ def get_viable_proxy_list(html, wanted_num):
 						'http://yahoo.com',
 						'http://wikipedia.org']
 	for proxy in proxies[:wanted_num]:
-		data = proxy.find('td').find('a').get_text()
+		data = proxy.find('td').get_text() #.find('a')
 		# Попытка перехода на сайты для проверки прокси.
 		try:
 			i = 0
@@ -58,11 +58,18 @@ def get_viable_proxy_list(html, wanted_num):
 		return list_of_viable_proxies
 
 
-list_of_viable_proxies = get_viable_proxy_list(get_html_proxy('https://www.ip-adress.com/proxy-list'),10)
-cur_dir = os.path.dirname(__file__)
-useragent_filename = os.path.join(cur_dir, 'useragents.txt')
-list_of_user_agents = open(useragent_filename).read().split('\n')
-	
+list_of_viable_proxies = []
+list_of_user_agents = []
+
+
+def setup_proxy():
+	global list_of_viable_proxies
+	global list_of_user_agents
+	list_of_viable_proxies = get_viable_proxy_list(get_html_proxy('https://free-proxy-list.net/'),10) # https://www.ip-adress.com/proxy-list
+	cur_dir = os.path.dirname(__file__)
+	useragent_filename = os.path.join(cur_dir, 'useragents.txt')
+	list_of_user_agents = open(useragent_filename).read().split('\n')
+
 
 def get_html_with_proxy(url):
 	time.sleep(round(abs(random.gauss(1.5, 1) + random.random()/10 + random.random()/100), 4))
@@ -72,7 +79,7 @@ def get_html_with_proxy(url):
 	return r.text
 
 def main():
-	url = 'https://www.ip-adress.com/proxy-list'	
+	url = 'https://free-proxy-list.net'	
 	print("Full list of viable proxies = ",  get_viable_proxy_list(get_html_proxy(url), 20))
 
 if __name__ == '__main__':

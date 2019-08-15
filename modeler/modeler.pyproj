@@ -39,6 +39,12 @@
     <Compile Include="app\migrations\__init__.py" />
     <Compile Include="crawler\admin.py" />
     <Compile Include="crawler\apps.py" />
+    <Compile Include="crawler\crawlers\atomicenergy.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="crawler\crawlers\rosenergoatom.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="crawler\crawlers\sdelanounas.py">
       <SubType>Code</SubType>
     </Compile>

@@ -1,10 +1,34 @@
-from crawler.crawlers_executor import contains_url
+from crawler import crawlers_executor
 from crawler.proxy_getter import get_html_with_proxy
 from bs4 import BeautifulSoup
 import requests
 import random
 import time
 import os
+
+#Функция сбора ссылок на статьи и запуск парсинга каждой статьи в цикле, если ее нет в БД
+def sdelanounas_crawler(base_url, search_url):
+    flag = True
+    count = 0
+
+    #Обходим все ссылки в поиске по сайту по "Росэнергоатом"
+    while(flag):
+        try:
+            flag = False
+            url = "%s%s" % (search_url, count)
+            html = get_html_with_proxy(url)
+            s = BeautifulSoup(html, "html.parser")
+            count += 1
+
+            for heading in s.findAll('div', {'class':'heading'}):
+                flag = True
+                article_url = "%s%s" % (base_url, heading.h4.a.get('href'))
+                if not(crawlers_executor.contains_url(article_url)):
+                    crawl(article_url) #crawl("%s%s" % ('http://www.sdelanounas.ru', '/blogs/5307'))
+        except Exception as e:
+            print('Исключение в collect_urls()', e)
+            continue
+
 
 #Функция парсинга html-страницы, представляющей собой статью
 def crawl(url):
@@ -76,29 +100,5 @@ def crawl(url):
     print("__________________________________________________________________________________\n")
 
     # Запись в БД
-    save_content()
-
-
-#Функция сбора ссылок на статьи и запуск парсинга каждой статьи в цикле, если ее нет в БД
-def collect_urls(base_url, search_url):
-    flag = True
-    count = 0
-
-    #Обходим все ссылки в поиске по сайту по "Росэнергоатом"
-    while(flag):
-        try:
-            flag = False
-            url = "%s%s" % (search_url, count)
-            html = get_html_with_proxy(url)
-            s = BeautifulSoup(html, "html.parser")
-            count += 1
-
-            for heading in s.findAll('div', {'class':'heading'}):
-                flag = True
-                article_url = "%s%s" % (base_url, heading.h4.a.get('href'))
-                if not(contains_url(article_url)):
-                    crawl(article_url) #crawl("%s%s" % ('http://www.sdelanounas.ru', '/blogs/5307'))
-        except Exception as e:
-            print('Исключение в collect_urls()', e)
-            continue
+    crawlers_executor.save_content(url, content, date, tags)
 
