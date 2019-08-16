@@ -50,7 +50,7 @@ def crawl(link, soup):
     except Exception as e:
         print("Исключение при определении заголовка статьи", url, e)
         title = ""
-    titleText = "%s %s\n" % ("HEADER:", title)
+    titleText = "%s %s\n" % ("TITLE:", title)
     print(titleText)
     
     # Данные
@@ -94,7 +94,7 @@ def crawl(link, soup):
     print(''.join(['-' for i in range(50)]) + '\n')
 
     # Запись в БД
-    crawlers_executor.save_content(link, data, date, tags)   
+    crawlers_executor.save_content(link, data, date, tags, title)   
     
 
 if __name__ == "__main__":

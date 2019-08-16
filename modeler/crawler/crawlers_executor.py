@@ -16,18 +16,18 @@ def exec_crawler():
     for res in resources:
         #if (res.name == "sdelanounas") or (res.name == "rosenergoatom"):
         #    continue
-        getattr(thismodule, res.name)(res.url)
+        getattr(thismodule, res.name)(res.url, res.additional_url)
 
 
-def sdelanounas(url):
+def sdelanounas(url, additional_url):
     print("sdelanounas()")
-    sdelanounas_crawler(url, 'http://www.sdelanounas.ru/sphinxsearch/?s=росэнергоатом&page=')
+    sdelanounas_crawler(url, additional_url)
 
-def rosenergoatom(url):
+def rosenergoatom(url, additional_url):
     print("rosenergoatom()")
-    rosenergoatom_crawler(url, 'http://www.rosenergoatom.ru/zhurnalistam/news-archive/')
+    rosenergoatom_crawler(url, additional_url)
 
-def atomicenergy(url):
+def atomicenergy(url, additional_url):
     print("atomicenergy()")
     atomicenergy_crawler(url)
 
@@ -36,9 +36,9 @@ def contains_url(search_url):
     return Data.objects.filter(url=search_url).exists()
 
 
-def save_content(url, content, date, tags):
+def save_content(url, content, date, tags, title):
     try:
-        data = Data(url = url, content = content, date = format_date(date), tags = tags)
+        data = Data(url = url, content = content, date = format_date(date), tags = tags, title = title)
         data.save()
     except Exception as e:
         print('Исключение при записи в БД', url, e)

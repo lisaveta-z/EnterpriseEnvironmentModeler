@@ -126,4 +126,4 @@ def crawl(url):
     print(separatorText)
 
     # Запись в БД
-    crawlers_executor.save_content(url, content, date, tag)
+    crawlers_executor.save_content(url, content, date, tag, title)

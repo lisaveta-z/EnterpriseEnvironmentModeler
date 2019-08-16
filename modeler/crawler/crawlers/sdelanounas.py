@@ -52,18 +52,18 @@ def crawl(url):
     print(urlText)
 
     #Заголовок статьи
-    header = ""
+    title = ""
     try:
         if s.findAll('h1', {'class':'h1_openblog'}):
-            header = s.findAll('h1', {'class':'h1_openblog'})[0]
+            title = s.findAll('h1', {'class':'h1_openblog'})[0]
         else:
-            header = s.findAll('h1', {'class':'unique'})[0]
-        header = header.text.strip()
+            title = s.findAll('h1', {'class':'unique'})[0]
+        title = title.text.strip()
     except Exception as e:
         print("Исключение при определении заголовка статьи", url, e)
-        header = ""
-    headerText = "%s %s\n" % ("HEADER:", header)
-    print(headerText)
+        title = ""
+    titleText = "%s %s\n" % ("TITLE:", title)
+    print(titleText)
 
     #Содержимое статьи
     try:
@@ -100,5 +100,5 @@ def crawl(url):
     print("__________________________________________________________________________________\n")
 
     # Запись в БД
-    crawlers_executor.save_content(url, content, date, tags)
+    crawlers_executor.save_content(url, content, date, tags, title)
 
