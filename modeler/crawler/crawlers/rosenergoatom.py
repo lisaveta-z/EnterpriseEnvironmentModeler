@@ -33,7 +33,7 @@ def new_article_url(start_url):
         count -= 1
 
         for a in s.findAll('p', {'class':'news-item'}):
-            print("NUMBER OF ARTICLE: ", numberArticle, '\n')
+            #print("NUMBER OF ARTICLE: ", numberArticle, '\n')
             item_id = a.get('id')
             length = len(item_id)
             item_start = item_id.rfind('_', 0, length) + 1
@@ -51,7 +51,7 @@ def old_article_url(start_url):
 
     # Определение кол-ва страниц
     url_pages = "%s%s" % (web_url, 0)
-    code_pages = get_html_with_proxy(page_url)
+    code_pages = get_html_with_proxy(url_pages)
     soup_page = BeautifulSoup(code_pages, "html.parser")
     pages = soup_page.find('a',{'class':'modern-page-dots'}).find_next_sibling('a')
 
@@ -63,7 +63,7 @@ def old_article_url(start_url):
         head = s.findAll('div', {'class':'news-list'})[2]
 
         for a in head.findAll('p', {'class':'news-item'}):
-            print("NUMBER OF ARTICLE: ", numberArticle, '\n')
+            #print("NUMBER OF ARTICLE: ", numberArticle, '\n')
             item_id = a.get('id')
             length = len(item_id)
             item_start = item_id.rfind('_', 0, length) + 1

@@ -48,7 +48,7 @@ def crawl(link, soup):
     try:
         title = soup.find('div', {'class':'clearfix'}).find('h1').text
     except Exception as e:
-        print("Исключение при определении заголовка статьи", url, e)
+        print("Исключение при определении заголовка статьи", link, e)
         title = ""
     titleText = "%s %s\n" % ("TITLE:", title)
     print(titleText)
@@ -60,7 +60,7 @@ def crawl(link, soup):
         for p in ps:
             data += p.text + '\n'
     except Exception as e:
-        print("Исключение при определении содержимого статьи", url, e)
+        print("Исключение при определении содержимого статьи", link, e)
         data = ""
     dataText = "%s %s\n" % ("CONTENT:", data)
     print(dataText)
@@ -70,7 +70,7 @@ def crawl(link, soup):
     try:
         date = ''.join([c if c not in ['\n','\t'] else '' for c in soup.find('div', {'class': 'node-meta__date'}).text])
     except Exception as e:
-        print("Исключение при определении даты статьи", url, e)
+        print("Исключение при определении даты статьи", link, e)
         date = ""
     dateText = "%s %s\n" % ("DATE:", date)
     print(dateText)
@@ -85,7 +85,7 @@ def crawl(link, soup):
             sp = tag.find('span').text
             t.append(te.strip()) #te + sp + ' '
     except Exception as e:
-        print("Исключение при определении тегов статьи", url, e)
+        print("Исключение при определении тегов статьи", link, e)
         t = []
     tags = ", ".join(t)
     tagsText = "%s %s\n" % ("TAGS:", tags)
