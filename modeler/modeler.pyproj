@@ -65,6 +65,16 @@
     <Compile Include="modeler\settings.py" />
     <Compile Include="modeler\urls.py" />
     <Compile Include="modeler\wsgi.py" />
+    <Compile Include="preprocessing\admin.py" />
+    <Compile Include="preprocessing\apps.py" />
+    <Compile Include="preprocessing\migrations\__init__.py" />
+    <Compile Include="preprocessing\models.py" />
+    <Compile Include="preprocessing\preprocessing.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="preprocessing\tests.py" />
+    <Compile Include="preprocessing\views.py" />
+    <Compile Include="preprocessing\__init__.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\" />
@@ -80,6 +90,10 @@
     <Folder Include="crawler\migrations\" />
     <Folder Include="crawler\crawlers\" />
     <Folder Include="modeler\" />
+    <Folder Include="preprocessing\" />
+    <Folder Include="preprocessing\migrations\" />
+    <Folder Include="preprocessing\templates\" />
+    <Folder Include="preprocessing\templates\preprocessing\" />
     <Folder Include="static\" />
     <Folder Include="static\content\" />
     <Folder Include="static\fonts\" />
@@ -89,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="crawler\useragents.txt" />
+    <Content Include="preprocessing\templates\preprocessing\index.html" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="app\static\app\content\bootstrap.css" />

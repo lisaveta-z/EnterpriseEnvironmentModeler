@@ -9,6 +9,7 @@ import django.contrib.auth.views
 import app.forms
 import app.views
 import crawler.views
+import preprocessing.views
 
 # Uncomment the next lines to enable the admin:
 # from django.conf.urls import include
@@ -17,7 +18,7 @@ import crawler.views
 
 urlpatterns = [
     # Examples:
-    url(r'^$', crawler.views.index, name='home'),
+    url(r'^$', preprocessing.views.index, name='home'),
     #url(r'^contact$', app.views.contact, name='contact'),
     #url(r'^about$', app.views.about, name='about'),
     #url(r'^login/$',
