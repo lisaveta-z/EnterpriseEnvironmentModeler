@@ -72,6 +72,9 @@
     <Compile Include="preprocessing\preprocessing.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="preprocessing\preprocessing_tools.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="preprocessing\tests.py" />
     <Compile Include="preprocessing\views.py" />
     <Compile Include="preprocessing\__init__.py" />
