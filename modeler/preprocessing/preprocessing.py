@@ -75,7 +75,6 @@ def get_stopwords():
 
     stopwords = list(stopwords)
     print('Total numver of stopwords:', len(stopwords))
-
     return stopwords
 
 
