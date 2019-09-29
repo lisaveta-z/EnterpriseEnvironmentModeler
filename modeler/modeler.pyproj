@@ -76,6 +76,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="preprocessing\tests.py" />
+    <Compile Include="preprocessing\topic_modeler.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="preprocessing\views.py" />
     <Compile Include="preprocessing\__init__.py" />
   </ItemGroup>
