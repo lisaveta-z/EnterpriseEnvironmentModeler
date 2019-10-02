@@ -15,6 +15,9 @@ import pymorphy2
 from sklearn.decomposition import LatentDirichletAllocation as LDA
 from preprocessing.topic_modeler import TopicModeler
 
+from sklearn.manifold import TSNE
+from sklearn.cluster import DBSCAN, AffinityPropagation, SpectralClustering, KMeans
+
 
 
 def preprocessing():    
@@ -154,3 +157,50 @@ def training_lda(dataset):
     lda = LDA(n_components = 60, max_iter=30, n_jobs=6, learning_method='batch', verbose=1)
     lda.fit(dataset)
     return lda
+
+
+def extend_stopwords_list(lda, count_vect, stopwords, train_texts):
+    #getting n_top words indices for every topic
+    sorted_words_coeffs = lda.components_.argsort(axis=1)
+    n_top = 10
+    top_coefs = sorted_words_coeffs[:,-n_top:][:,::-1]
+
+    #making those texts consisting of top words
+    vect_texts = np.zeros((top_coefs.shape[0], lda.components_.shape[1]))
+    for i,n_top_coefs in enumerate(top_coefs):
+        for coef in n_top_coefs:
+            vect_texts[i,coef] = 1
+
+    #transforming them to term-doc vectors.
+    top_words = count_vect.inverse_transform(vect_texts)
+    top_words_set = set()
+    for words in top_words:
+        top_words_set.update(set(words))
+    print(len(top_words_set))
+
+    #specifying words for TfidfVectorizer to fit on.
+    voc_to_idf = {word : i for i, word in enumerate(top_words_set)}
+
+    #computing idfs
+    tfidf_tw = TfidfVectorizer(input='content', vocabulary=voc_to_idf, stop_words=stopwords)
+    tfidf_tw.fit(train_texts)
+
+    idfs = tfidf_tw.idf_
+    print(idfs.shape)
+
+    #computing n most common words
+    n_top = int(idfs.shape[0] * 0.05)
+    n_top_indices = np.argsort(idfs)[:n_top]
+    vect_words = np.zeros((n_top, len(idfs)))
+
+    #adding them to list.
+    inv_voc_to_idf = {voc_to_idf[key] : key for key in voc_to_idf.keys()}
+    extra_stop_words = []
+    for ind in n_top_indices:
+        extra_stop_words.append(inv_voc_to_idf[ind])
+    print(len(extra_stop_words))
+
+    #In case we wanna add those picked words to stop words
+    stopwords = stopwords + extra_stop_words
+    return stopwords
+
