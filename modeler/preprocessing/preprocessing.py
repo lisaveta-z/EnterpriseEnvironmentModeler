@@ -17,11 +17,15 @@ from preprocessing.topic_modeler import TopicModeler
 
 from sklearn.manifold import TSNE
 from sklearn.cluster import DBSCAN, AffinityPropagation, SpectralClustering, KMeans
+import codecs
+
+import matplotlib.cm as cm
+import matplotlib.pyplot as plt
 
 
 
 def preprocessing():    
-    texts = Data.objects.all().values_list('content', flat=True)[:10]
+    texts = Data.objects.all().values_list('content', flat=True)[:1000]
     print('Numver of texts:', texts.count())
 
     texts = filter_by_length(texts)
@@ -45,10 +49,16 @@ def preprocessing():
     dataset, count_vect = training_count_vectorizer(lemmatized, stopwords, train_texts)
     lda = training_lda(dataset)
 
+    stopwords = extend_stopwords_list(lda, count_vect, stopwords, train_texts)
+    print('Numver of stopwords:', len(stopwords))
+
     dataset = count_vect.transform(test_texts)
     tm = TopicModeler(count_vect, lda)
     key_words = tm.get_keywords(test_texts[0], n_topics=1, n_keywords=10)
-    print(key_words)
+    print(key_words)    
+
+    making_texts_embeddings(texts, count_vect, lda)
+
 
 
 def filter_by_length(texts):
@@ -74,7 +84,7 @@ def get_stopwords():
     stopwords_files = glob(stopwords_path)
     extra_stopwords = set()
     for name in stopwords_files:
-        with open(name, 'r') as f:
+        with codecs.open(name, 'r', 'utf-8') as f:
             words = f.readlines()
             words = [word.strip() for word in words]
             extra_stopwords.update(set(words))
@@ -193,14 +203,54 @@ def extend_stopwords_list(lda, count_vect, stopwords, train_texts):
     n_top_indices = np.argsort(idfs)[:n_top]
     vect_words = np.zeros((n_top, len(idfs)))
 
-    #adding them to list.
+    #adding them to list
     inv_voc_to_idf = {voc_to_idf[key] : key for key in voc_to_idf.keys()}
     extra_stop_words = []
+    morph = pymorphy2.MorphAnalyzer()
     for ind in n_top_indices:
-        extra_stop_words.append(inv_voc_to_idf[ind])
+        if { 'NOUN' } not in morph.parse(inv_voc_to_idf[ind])[0].tag:
+            extra_stop_words.append(inv_voc_to_idf[ind])
     print(len(extra_stop_words))
 
-    #In case we wanna add those picked words to stop words
+    #add picked words to stop words
     stopwords = stopwords + extra_stop_words
     return stopwords
+
+
+
+def making_texts_embeddings(texts, count_vect, lda):
+    term_doc_matrix = count_vect.transform(texts)
+    embeddings = lda.transform(term_doc_matrix)
+
+    kmeans = KMeans(n_clusters=20) #30
+    clust_labels = kmeans.fit_predict(embeddings)
+    clust_centers = kmeans.cluster_centers_
+
+    embeddings_to_tsne = np.concatenate((embeddings, clust_centers), axis=0)
+
+    tsne =  TSNE(n_components=2, perplexity=15)
+    tsne_embeddings = tsne.fit_transform(embeddings_to_tsne)
+    tsne_embeddings, centroids_embeddings = np.split(tsne_embeddings, [len(clust_labels)], axis=0)
+
+    print(tsne_embeddings.shape, centroids_embeddings.shape)
+
+    clust_indices = np.unique(clust_labels)
+
+    clusters = {clust_ind : [] for clust_ind in clust_indices}
+    for emb, label in zip(tsne_embeddings, clust_labels):
+        clusters[label].append(emb)
+
+    for key in clusters.keys():
+        clusters[key] = np.array(clusters[key])
+    colors = cm.rainbow(np.linspace(0, 1, len(clust_indices)))
+    plt.figure(figsize=(10,10))
+    for ind, color in zip(clust_indices, colors):
+        x = clusters[ind][:,0]
+        y = clusters[ind][:,1]
+        plt.scatter(x, y, color=color)
+    
+        centroid = centroids_embeddings[ind]
+        plt.scatter(centroid[0],centroid[1], color=color, marker='x', s=100)
+
+    plt.show()
 
