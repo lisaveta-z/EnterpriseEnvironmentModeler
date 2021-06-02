@@ -6,7 +6,7 @@ idna==2.7
 lxml==4.2.5
 requests==2.20.0
 six==1.11.0
-urllib3==1.24
+urllib3==1.26.5
 dateparser==0.7.1
 nltk==3.4.4
 matplotlib==3.1.1
